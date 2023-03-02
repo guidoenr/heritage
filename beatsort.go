@@ -2,19 +2,18 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/zmb3/spotify"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"golang.org/x/oauth2/clientcredentials"
 	"log"
-	"net/http"
 	"os"
 	"sort"
 	"sync"
 )
 
+// BeatSort is the class to encapsulate all the spotify logic
 type BeatSort struct {
 	client     spotify.Client // the spotify client
 	playlistID string
@@ -71,6 +70,8 @@ func (bs *BeatSort) GetTrackAudioFeatures() ([]TrackFeatures, error) {
 		wg.Add(1)
 		// ---------------------------------- GO ROUTINE
 		go func(track spotify.FullTrack) {
+			// TODO, output in a file
+			/*log.Printf("[goroutine %s] with track '%s' \n", track.ID, track.Name)*/
 			defer wg.Done()
 			// get the audio features of the track
 			audioFeatures, err := bs.client.GetAudioFeatures(track.ID)
@@ -86,6 +87,8 @@ func (bs *BeatSort) GetTrackAudioFeatures() ([]TrackFeatures, error) {
 				BeatsPerMin: audioFeatures[0].Tempo,
 				Genre:       audioFeatures[0].Energy,
 			}
+			/*log.Printf("[goroutine %s] finished!\n", track.ID)*/
+
 		}(t.Track)
 		// ---------------------------------- GO ROUTINE
 	}
@@ -103,6 +106,7 @@ func (bs *BeatSort) GetTrackAudioFeatures() ([]TrackFeatures, error) {
 	}
 
 	// sort the slice based on the BeatsPerMin field
+	// (quicksort)
 	sort.Slice(tracks, func(i, j int) bool {
 		return tracks[i].BeatsPerMin < tracks[j].BeatsPerMin
 	})
@@ -110,7 +114,7 @@ func (bs *BeatSort) GetTrackAudioFeatures() ([]TrackFeatures, error) {
 	return tracks, nil
 }
 
-// GetTracks returns the entire playlist tracks page
+// getTracks returns the entire playlist tracks page
 func (bs *BeatSort) getTracks() (*spotify.PlaylistTrackPage, error) {
 	// getting the tracks
 	tracks, err := bs.client.GetPlaylistTracks(spotify.ID(bs.playlistID))
@@ -119,20 +123,7 @@ func (bs *BeatSort) getTracks() (*spotify.PlaylistTrackPage, error) {
 		return nil, errors.New(msg)
 	}
 
+	log.Printf("total tracks found in playlist: %d \n", tracks.Total)
+
 	return tracks, nil
-}
-
-func (bs *BeatSort) getTempo(song string) {
-	url := "https://developer.echonest.com/api/v4/track/profile?api_key=YOUR_API_KEY&format=json&id=spotify:track:0eGsygTp906u18L0Oimnem&bucket=audio_summary"
-	response, err := http.Get(url)
-	if err != nil {
-		fmt.Println("Error retrieving tempo:", err)
-		return
-	}
-	defer response.Body.Close()
-
-	var result map[string]interface{}
-	json.NewDecoder(response.Body).Decode(&result)
-	tempo := result["response"].(map[string]interface{})["track"].(map[string]interface{})["tempo"].(float64)
-	fmt.Println("Tempo:", tempo)
 }

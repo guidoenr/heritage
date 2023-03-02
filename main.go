@@ -13,7 +13,7 @@ type TrackFeatures struct {
 
 func main() {
 	ctx := context.Background()
-	playlistID := "7FfTSCdDior4RcVj02cXub"
+	playlistID := "5yeMjFdKUWapyQ7854FtBT"
 
 	// initialize the beatsrot
 	var beatSort BeatSort
