@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"sort"
-	"sync"
 )
 
 // BeatSort is the class to encapsulate all the spotify logic
@@ -42,80 +41,69 @@ func (bs *BeatSort) init(ctx context.Context, playlistID string) {
 
 // ShowTracksTerminal prints the tracks in terminal based
 func (bs *BeatSort) ShowTracksTerminal() {
-	tracks, _ := bs.GetTrackAudioFeatures()
-
-	for _, t := range tracks {
-		fmt.Printf("[%d bpm] %s - %s \n", int(t.BeatsPerMin), t.TrackName, t.ArtistName)
+	tracks, err := bs.GetTracksAudioFeatures()
+	if err != nil {
+		fmt.Println("nothing")
+	} else {
+		for _, t := range tracks {
+			fmt.Println(t.Tempo)
+		}
 	}
-
 }
 
-// GetTrackAudioFeatures has the responsibility of launch the algorithm with go routines
-// to find all the BPM in all the tracks
-func (bs *BeatSort) GetTrackAudioFeatures() ([]TrackFeatures, error) {
-	// get the spotifyTracks
-	spotifyTracks, err := bs.getTracks()
+// GetTracksAudioFeatures returns the audio features of each track
+func (bs *BeatSort) GetTracksAudioFeatures() ([]*spotify.AudioFeatures, error) {
+	// get the totalTracks
+	totalTracks, err := bs.GetTracks()
 	if err != nil {
 		return nil, err
 	}
 
-	// create a channel to collect the audio features for each track
-	trackFeaturesChan := make(chan TrackFeatures)
-
-	// create a wait group to wait for all goroutines to finish
-	var wg sync.WaitGroup
-
-	// for each track, launch a new goroutine to fetch the audio features
-	for _, t := range spotifyTracks {
-		wg.Add(1)
-		// ---------------------------------- GO ROUTINE
-		go func(track spotify.FullTrack) {
-			// TODO, output in a file
-			/*log.Printf("[goroutine %s] with track '%s' \n", track.ID, track.Name)*/
-			defer wg.Done()
-			// get the audio features of the track
-			audioFeatures, err := bs.client.GetAudioFeatures(track.ID)
-			if err != nil {
-				log.Printf("error fetching audio features for %s: %v", track.Name, err)
-				return
-			}
-
-			// add the content of the audioFeatures to the features channel
-			trackFeaturesChan <- TrackFeatures{
-				TrackName:   track.Name,
-				ArtistName:  track.Artists[0].Name,
-				BeatsPerMin: audioFeatures[0].Tempo,
-				Genre:       audioFeatures[0].Energy,
-			}
-			/*log.Printf("[goroutine %s] finished!\n", track.ID)*/
-
-		}(t.Track)
-		// ---------------------------------- GO ROUTINE
+	// set the track id's
+	var tracksId []spotify.ID
+	for _, track := range totalTracks {
+		tracksId = append(tracksId, track.Track.ID)
 	}
 
-	// wait for all goroutines to finish and close the channel
-	go func() {
-		wg.Wait()
-		close(trackFeaturesChan)
-	}()
+	// 170 ? ==> 100 + 70
+	// the request limit for getAudioFeatures
+	//limit := 100
+	//totalRoutines := 1
+	//
+	//// if the playlist contains more than 100 songs to analyze
+	//if len(tracksId) > 100 {
+	//	lengthTracksId := len(tracksId)
+	//	// while the length is greater than 100
+	//	for lengthTracksId > 100 {
+	//		// reduce the length (for example: 601 songs - 100 limit = 501 songs)
+	//		lengthTracksId = lengthTracksId - limit
+	//		totalRoutines += 1
+	//	}
+	//}
+	//log.Printf("total routines to launch: %d", totalRoutines)
 
-	// read data from the channel and append it to the slice
-	var tracks []TrackFeatures
-	for track := range trackFeaturesChan {
-		tracks = append(tracks, track)
+	if len(tracksId) > 100 {
+		return nil, errors.New("NOT IMPLEMENTED YET: playlist has more than 100 tracks")
+	}
+
+	// get all the audio features
+	audioFeatures, err := bs.client.GetAudioFeatures(tracksId...)
+	if err != nil {
+		msg := fmt.Sprintf("error fetching audio features: %v", err)
+		return nil, errors.New(msg)
 	}
 
 	// sort the slice based on the BeatsPerMin field
 	// (quicksort)
-	sort.Slice(tracks, func(i, j int) bool {
-		return tracks[i].BeatsPerMin < tracks[j].BeatsPerMin
+	sort.Slice(audioFeatures, func(i, j int) bool {
+		return audioFeatures[i].Tempo < audioFeatures[j].Tempo
 	})
 
-	return tracks, nil
+	return audioFeatures, nil
 }
 
-// getTracks returns all tracks in the playlist, handling pagination if necessary
-func (bs *BeatSort) getTracks() ([]spotify.PlaylistTrack, error) {
+// GetTracks returns all tracks in the playlist, handling pagination if necessary
+func (bs *BeatSort) GetTracks() ([]spotify.PlaylistTrack, error) {
 	log.Println("getting tracks..")
 	// create the slice of playlistTrack
 	var tracks []spotify.PlaylistTrack
@@ -145,6 +133,7 @@ func (bs *BeatSort) getTracks() ([]spotify.PlaylistTrack, error) {
 		newOffset := page.Offset + page.Limit
 		opt.Offset = &newOffset
 	}
+
 	log.Printf("total tracks found in playlist: %d\n", len(tracks))
 	return tracks, nil
 }
