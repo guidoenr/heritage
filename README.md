@@ -1,2 +1,3 @@
-# beatsort
-beatsort analyzes songs and order them by their tempo
+# Heritage
+![](resources/H-white.png)
+
