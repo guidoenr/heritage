@@ -1,3 +1,3 @@
 # Heritage
-![](resources/H-white.png)
+![](resources/H-black.png)
 
