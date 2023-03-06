@@ -1,4 +1,4 @@
-module github.com/guidoenr/beatsort
+module github.com/guidoenr/heritage
 
 go 1.19
 

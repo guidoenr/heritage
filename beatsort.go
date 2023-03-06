@@ -42,70 +42,15 @@ func (bs *BeatSort) init(ctx context.Context, playlistID string) {
 }
 
 type HTrack struct {
-	id       spotify.ID
-	name     string
-	tempo    int
-	duration float64
-	URI      string
-}
-
-// GetTracksAudioFeatures returns the audio features of each track
-func (bs *BeatSort) GetTracksAudioFeatures() ([]HTrack, error) {
-	// get the totalTracks
-	totalTracks, err := bs.GetTracks()
-	if err != nil {
-		return nil, err
-	}
-
-	// set the track id's
-	var tracksId []spotify.ID
-	for _, track := range totalTracks {
-		tracksId = append(tracksId, track.id)
-	}
-
-	// 170 ? ==> 100 + 70
-	// the request limit for getAudioFeatures
-	//limit := 100
-	//totalRoutines := 1
-	//
-	//// if the playlist contains more than 100 songs to analyze
-	//if len(tracksId) > 100 {
-	//	lengthTracksId := len(tracksId)
-	//	// while the length is greater than 100
-	//	for lengthTracksId > 100 {
-	//		// reduce the length (for example: 601 songs - 100 limit = 501 songs)
-	//		lengthTracksId = lengthTracksId - limit
-	//		totalRoutines += 1
-	//	}
-	//}
-	//log.Printf("total routines to launch: %d", totalRoutines)
-
-	if len(tracksId) > 100 {
-		return nil, errors.New("NOT IMPLEMENTED YET: playlist has more than 100 htracks")
-	}
-
-	// get all the audio features
-	audioFeatures, err := bs.client.GetAudioFeatures(tracksId...)
-	if err != nil {
-		msg := fmt.Sprintf("error fetching audio features: %v", err)
-		return nil, errors.New(msg)
-	}
-
-	for i, af := range audioFeatures {
-		totalTracks[i].tempo = int(af.Tempo)
-	}
-
-	// sort the slice based on the BeatsPerMin field
-	// (quicksort)
-	sort.Slice(totalTracks, func(i, j int) bool {
-		return totalTracks[i].tempo < totalTracks[j].tempo
-	})
-
-	return totalTracks, nil
+	Id      spotify.ID
+	Name    string
+	BPM     int
+	Minutes float64
+	URI     string
 }
 
 // GetTracks returns all tracks in the playlist handling pagination if necessary
-func (bs *BeatSort) GetTracks() ([]HTrack, error) {
+func (bs *BeatSort) GetTracks(sortedBPM bool) ([]HTrack, error) {
 	log.Println("getting tracks..")
 	// create the slice of playlistTrack
 	var tracks []spotify.PlaylistTrack
@@ -145,12 +90,60 @@ func (bs *BeatSort) GetTracks() ([]HTrack, error) {
 		}
 
 		htracks = append(htracks, HTrack{
-			id:       t.Track.ID,
-			name:     trackName[0:],
-			tempo:    0,
-			duration: float64(t.Track.Duration) / 60000,
-			URI:      string(t.Track.URI),
+			Id:      t.Track.ID,
+			Name:    trackName[0:],
+			BPM:     0,
+			Minutes: float64(t.Track.Duration) / 60000,
+			URI:     string(t.Track.URI),
 		})
+	}
+
+	if sortedBPM {
+		// set the track Id's
+		var tracksId []spotify.ID
+		for _, track := range htracks {
+			tracksId = append(tracksId, track.Id)
+		}
+
+		// 170 ? ==> 100 + 70
+		// the request limit for getAudioFeatures
+		//limit := 100
+		//totalRoutines := 1
+		//
+		//// if the playlist contains more than 100 songs to analyze
+		//if len(tracksId) > 100 {
+		//	lengthTracksId := len(tracksId)
+		//	// while the length is greater than 100
+		//	for lengthTracksId > 100 {
+		//		// reduce the length (for example: 601 songs - 100 limit = 501 songs)
+		//		lengthTracksId = lengthTracksId - limit
+		//		totalRoutines += 1
+		//	}
+		//}
+		//log.Printf("total routines to launch: %d", totalRoutines)
+
+		if len(tracksId) > 100 {
+			return nil, errors.New("NOT IMPLEMENTED YET: playlist has more than 100 htracks")
+		}
+
+		// get all the audio features
+		audioFeatures, err := bs.client.GetAudioFeatures(tracksId...)
+		if err != nil {
+			msg := fmt.Sprintf("error fetching audio features: %v", err)
+			return nil, errors.New(msg)
+		}
+
+		for i, af := range audioFeatures {
+			htracks[i].BPM = int(af.Tempo)
+		}
+
+		// sort the slice based on the BeatsPerMin field
+		// (quicksort)
+		sort.Slice(htracks, func(i, j int) bool {
+			return htracks[i].BPM < htracks[j].BPM
+		})
+
+		return htracks, nil
 	}
 
 	log.Printf("total tracks found in playlist: %d\n", len(htracks))

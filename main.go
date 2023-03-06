@@ -13,13 +13,13 @@ func main() {
 	var beatSort BeatSort
 	beatSort.init(ctx, playlistID)
 
-	// find tracks tempo
-	tracks, err := beatSort.GetTracksAudioFeatures()
+	// find tracks BPM
+	tracks, err := beatSort.GetTracks(true)
 	if err != nil {
 		fmt.Println(err)
 	}
 	for _, t := range tracks {
-		fmt.Printf("[%dbpm] %s | duration: %.2f \n", t.tempo, t.name, t.duration)
+		fmt.Printf("[%dbpm] %s | Minutes: %.2f\n", t.BPM, t.Name, t.Minutes)
 	}
 
 }
