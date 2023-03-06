@@ -26,11 +26,13 @@ func (bs *BeatSort) init(ctx context.Context, playlistID string) {
 		ClientSecret: os.Getenv("SPOTIFY_SECRET"),
 		TokenURL:     spotifyauth.TokenURL,
 	}
+
 	// create the token
 	token, err := config.Token(ctx)
 	if err != nil {
 		log.Fatalf("couldn't get token: %v", err)
 	}
+
 	// create the http client
 	httpClient := spotifyauth.New().Client(ctx, token)
 
@@ -39,20 +41,16 @@ func (bs *BeatSort) init(ctx context.Context, playlistID string) {
 	bs.playlistID = playlistID
 }
 
-// ShowTracksTerminal prints the tracks in terminal based
-func (bs *BeatSort) ShowTracksTerminal() {
-	tracks, err := bs.GetTracksAudioFeatures()
-	if err != nil {
-		fmt.Println("nothing")
-	} else {
-		for _, t := range tracks {
-			fmt.Println(t.Tempo)
-		}
-	}
+type HTrack struct {
+	id       spotify.ID
+	name     string
+	tempo    int
+	duration float64
+	URI      string
 }
 
 // GetTracksAudioFeatures returns the audio features of each track
-func (bs *BeatSort) GetTracksAudioFeatures() ([]*spotify.AudioFeatures, error) {
+func (bs *BeatSort) GetTracksAudioFeatures() ([]HTrack, error) {
 	// get the totalTracks
 	totalTracks, err := bs.GetTracks()
 	if err != nil {
@@ -62,7 +60,7 @@ func (bs *BeatSort) GetTracksAudioFeatures() ([]*spotify.AudioFeatures, error) {
 	// set the track id's
 	var tracksId []spotify.ID
 	for _, track := range totalTracks {
-		tracksId = append(tracksId, track.Track.ID)
+		tracksId = append(tracksId, track.id)
 	}
 
 	// 170 ? ==> 100 + 70
@@ -83,7 +81,7 @@ func (bs *BeatSort) GetTracksAudioFeatures() ([]*spotify.AudioFeatures, error) {
 	//log.Printf("total routines to launch: %d", totalRoutines)
 
 	if len(tracksId) > 100 {
-		return nil, errors.New("NOT IMPLEMENTED YET: playlist has more than 100 tracks")
+		return nil, errors.New("NOT IMPLEMENTED YET: playlist has more than 100 htracks")
 	}
 
 	// get all the audio features
@@ -93,17 +91,21 @@ func (bs *BeatSort) GetTracksAudioFeatures() ([]*spotify.AudioFeatures, error) {
 		return nil, errors.New(msg)
 	}
 
+	for i, af := range audioFeatures {
+		totalTracks[i].tempo = int(af.Tempo)
+	}
+
 	// sort the slice based on the BeatsPerMin field
 	// (quicksort)
-	sort.Slice(audioFeatures, func(i, j int) bool {
-		return audioFeatures[i].Tempo < audioFeatures[j].Tempo
+	sort.Slice(totalTracks, func(i, j int) bool {
+		return totalTracks[i].tempo < totalTracks[j].tempo
 	})
 
-	return audioFeatures, nil
+	return totalTracks, nil
 }
 
-// GetTracks returns all tracks in the playlist, handling pagination if necessary
-func (bs *BeatSort) GetTracks() ([]spotify.PlaylistTrack, error) {
+// GetTracks returns all tracks in the playlist handling pagination if necessary
+func (bs *BeatSort) GetTracks() ([]HTrack, error) {
 	log.Println("getting tracks..")
 	// create the slice of playlistTrack
 	var tracks []spotify.PlaylistTrack
@@ -134,6 +136,23 @@ func (bs *BeatSort) GetTracks() ([]spotify.PlaylistTrack, error) {
 		opt.Offset = &newOffset
 	}
 
-	log.Printf("total tracks found in playlist: %d\n", len(tracks))
-	return tracks, nil
+	// now fill the htracks slice
+	var htracks []HTrack
+	for _, t := range tracks {
+		trackName := t.Track.Name + " - "
+		for _, artist := range t.Track.Artists {
+			trackName += artist.Name + " - "
+		}
+
+		htracks = append(htracks, HTrack{
+			id:       t.Track.ID,
+			name:     trackName[0:],
+			tempo:    0,
+			duration: float64(t.Track.Duration) / 60000,
+			URI:      string(t.Track.URI),
+		})
+	}
+
+	log.Printf("total tracks found in playlist: %d\n", len(htracks))
+	return htracks, nil
 }
