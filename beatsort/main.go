@@ -4,8 +4,6 @@ func main() {
 
 	// initialize the beatsrot
 	var beatSort BeatSort
-	beatSort.init(".")
-
-	beatSort.SavePlaylist()
+	beatSort.init("./groovy-deep-techno/")
 
 }

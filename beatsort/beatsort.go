@@ -1,67 +1,57 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 type Song struct {
-	NewName string `json:"newname"`
-	OldName string `json:"oldname"`
-	Index   int    `json:"index"`
+	Name     string `json:"name"`
+	Index    int    `json:"int"`
+	Filename string `json:"filename"`
+}
+
+func (s *Song) init(name string, index int) {
+	s.Name = name
+	s.Index = index + 1
+
+	// first get the old index of the song
+	oldIndex, _ := strconv.Atoi(name[0:2])
+	if oldIndex != 0 {
+		s.RemoveIndex()
+	}
+
+	s.Filename = fmt.Sprintf("%d- %s", s.Index, s.Name)
+}
+
+func (s *Song) RemoveIndex() {
+	s.Name = s.Name[3:]
+}
+
+func (s *Song) SetIndex(index int) {
+	// set the new index
+	s.Index = index
+	s.Filename = string(rune(index)) + "-" + s.Name
 }
 
 type BeatSort struct {
+	Path     string
 	Playlist []Song
 }
 
-// init initializes the BeatSort module
-func (bs *BeatSort) init(path string) error {
+func (bs *BeatSort) init(path string) {
 	// get all the files inside the dir
 	filesDir, err := os.ReadDir(path)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	// fill the playlist
 	for index, file := range filesDir {
-		bs.Playlist = append(bs.Playlist, Song{
-			OldName: file.Name(),
-			NewName: fmt.Sprintf("[%d]%s", index, file.Name()),
-			Index:   index,
-		})
+		var newSong Song
+		newSong.init(file.Name(), index)
+
+		bs.Playlist = append(bs.Playlist, newSong)
 	}
 
-	return nil
-}
-
-// SavePlaylist just write the content in the order.json file
-func (bs *BeatSort) SavePlaylist() error {
-	// get the json data
-	data, err := json.MarshalIndent(bs.Playlist, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	// write the file
-	err = os.WriteFile("order.json", data, 0644)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// LoadPlaylist just write the content in the order.json file
-func (bs *BeatSort) LoadPlaylist() error {
-	data, err := os.ReadFile("order.json")
-	if err != nil {
-		return err
-	}
-	err = json.Unmarshal(data, &bs.Playlist)
-	if err != nil {
-		return err
-	}
-	return nil
 }
