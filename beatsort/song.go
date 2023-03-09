@@ -1,7 +1,10 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -11,20 +14,33 @@ type Song struct {
 	Filename string `json:"filename"`
 }
 
-func (s *Song) init(name string, index int) {
-	s.Name = name
-	s.Index = index + 1
-
-	// first get the old index of the song
-	oldIndex, _ := strconv.Atoi(name[0:2])
-	newName := s.Name
-	if oldIndex != 0 {
-		newName = s.RemoveIndex()
-	}
-
-	s.Filename = fmt.Sprintf("%d - %s", s.Index, newName)
+func (s *Song) init(fileName string, index int) {
+	s.Filename = fileName
+	s.Name = s.GetSongName(fileName)
+	s.Index = index
 }
 
-func (s *Song) RemoveIndex() string {
-	return s.Name[3:]
+func (s *Song) GetSongName(fileName string) string {
+	index, _ := strconv.Atoi(fileName[0:2])
+	fmt.Println(index)
+	if index != 0 {
+		return fileName[3:]
+	}
+	return fileName
+}
+
+func (s *Song) Rename(path string) error {
+	// get the real path
+	oldName := filepath.Join(path, s.Filename)
+	newName := filepath.Join(path, s.GetSongName(s.Filename))
+
+	// rename the song
+	err := os.Rename(oldName, newName)
+
+	if err != nil {
+		msg := fmt.Sprintf("renaming song '%s': %v", s.Name, err)
+		return errors.New(msg)
+	}
+
+	return nil
 }

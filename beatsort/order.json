@@ -1,22 +1,17 @@
 [
    {
-      "name": "01-AmazingSong.mp3",
+      "name": "Another Song - Random DJ.mp3",
       "index": 1,
-      "filename": "1 - AmazingSong.mp3"
+      "filename": "Another Song - Random DJ.mp3"
    },
    {
-      "name": "Cream.mp3",
+      "name": "Leviatine - MASDAS.mp3",
       "index": 2,
-      "filename": "2 - Cream.mp3"
+      "filename": "Leviatine - MASDAS.mp3"
    },
    {
-      "name": "Understnd.mp3",
+      "name": "Understand- adriatique",
       "index": 3,
-      "filename": "3 - Understnd.mp3"
-   },
-   {
-      "name": "Xada.mp3",
-      "index": 4,
-      "filename": "4 - Xada.mp3"
+      "filename": "Understand- adriatique"
    }
 ]

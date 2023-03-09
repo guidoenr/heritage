@@ -1,9 +1,15 @@
 package main
 
+import "fmt"
+
 func main() {
 
 	// initialize the beatsrot
 	var beatSort BeatSort
-	beatSort.init("./groovy-deep-techno/")
+	err := beatSort.init("./playlist/")
+	fmt.Println(err)
+	err = beatSort.SortPlaylist()
+	fmt.Println(err)
 
+	err = beatSort.SavePlaylistState()
 }
