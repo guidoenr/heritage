@@ -1,44 +1,22 @@
 [
-  {
-    "newname": "0 - 0 - Cream.mp3",
-    "newindex": 0,
-    "oldname": "0 - Cream.mp3",
-    "oldindex": 0
-  },
-  {
-    "newname": "1 - 1 - Understnd.mp3",
-    "newindex": 0,
-    "oldname": "1 - Understnd.mp3",
-    "oldindex": 1
-  },
-  {
-    "newname": "2 - 2 - arg-inheritance.mp3",
-    "newindex": 0,
-    "oldname": "2 - arg-inheritance.mp3",
-    "oldindex": 2
-  },
-  {
-    "newname": "3 - 3 - kali.mp3",
-    "newindex": 0,
-    "oldname": "3 - kali.mp3",
-    "oldindex": 3
-  },
-  {
-    "newname": "4 - 4 - oneTime.mp3",
-    "newindex": 0,
-    "oldname": "4 - oneTime.mp3",
-    "oldindex": 4
-  },
-  {
-    "newname": "5 - 5 - thisIsPirate.mp3",
-    "newindex": 0,
-    "oldname": "5 - thisIsPirate.mp3",
-    "oldindex": 5
-  },
-  {
-    "newname": "6 - 6 - what-song-amazing.mp3",
-    "newindex": 0,
-    "oldname": "6 - what-song-amazing.mp3",
-    "oldindex": 6
-  }
+   {
+      "name": "01-AmazingSong.mp3",
+      "index": 1,
+      "filename": "1 - AmazingSong.mp3"
+   },
+   {
+      "name": "Cream.mp3",
+      "index": 2,
+      "filename": "2 - Cream.mp3"
+   },
+   {
+      "name": "Understnd.mp3",
+      "index": 3,
+      "filename": "3 - Understnd.mp3"
+   },
+   {
+      "name": "Xada.mp3",
+      "index": 4,
+      "filename": "4 - Xada.mp3"
+   }
 ]
