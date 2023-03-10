@@ -20,7 +20,9 @@ func (s *Song) init(fileName string, index int) {
 	s.Name = s.AnalyzeSongName(fileName)
 
 	if index < 10 {
-		
+		// add the 0 to the index
+		newIndex, _ := strconv.Atoi("0" + strconv.Itoa(index))
+		index = newIndex
 	}
 	s.Index = index
 }
