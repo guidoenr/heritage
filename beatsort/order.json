@@ -1,17 +1,19 @@
-[
-   {
-      "name": "Another Song - Random DJ.mp3",
-      "index": 1,
-      "filename": "Another Song - Random DJ.mp3"
-   },
-   {
-      "name": "Leviatine - MASDAS.mp3",
-      "index": 2,
-      "filename": "Leviatine - MASDAS.mp3"
-   },
-   {
-      "name": "Understand- adriatique",
-      "index": 3,
-      "filename": "Understand- adriatique"
-   }
-]
+{
+   "songs": [
+      {
+         "index": 1,
+         "filename": "1 - Another Song - Random DJ.mp3",
+         "name": "1 - Another Song - Random DJ.mp3"
+      },
+      {
+         "index": 2,
+         "filename": "2 - Leviatine - MASDAS.mp3",
+         "name": "2 - Leviatine - MASDAS.mp3"
+      },
+      {
+         "index": 3,
+         "filename": "3 - Understand- adriatique",
+         "name": "3 - Understand- adriatique"
+      }
+   ]
+}

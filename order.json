@@ -1,0 +1,19 @@
+{
+   "songs": [
+      {
+         "index": 1,
+         "filename": "02 - Another song - artist",
+         "name": " Another song - artist"
+      },
+      {
+         "index": 2,
+         "filename": "1 -  Nice song - xD",
+         "name": "1 -  Nice song - xD"
+      },
+      {
+         "index": 3,
+         "filename": "song.mp3",
+         "name": "song.mp3"
+      }
+   ]
+}

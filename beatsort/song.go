@@ -9,22 +9,28 @@ import (
 )
 
 type Song struct {
-	Name     string `json:"name"`
 	Index    int    `json:"index"`
 	Filename string `json:"filename"`
+	Name     string `json:"name"`
 }
 
+// init initializes the song with their correct format: "02 - Title - Artists"
 func (s *Song) init(fileName string, index int) {
 	s.Filename = fileName
-	s.Name = s.GetSongName(fileName)
+	s.Name = s.AnalyzeSongName(fileName)
+
+	if index < 10 {
+		
+	}
 	s.Index = index
 }
 
-func (s *Song) GetSongName(fileName string) string {
+func (s *Song) AnalyzeSongName(fileName string) string {
+	// get the index of the song and check if is a valid int
 	index, _ := strconv.Atoi(fileName[0:2])
-	fmt.Println(index)
 	if index != 0 {
-		return fileName[3:]
+		name := fileName[4:]
+		return name
 	}
 	return fileName
 }
@@ -32,7 +38,13 @@ func (s *Song) GetSongName(fileName string) string {
 func (s *Song) Rename(path string) error {
 	// get the real path
 	oldName := filepath.Join(path, s.Filename)
-	newName := filepath.Join(path, s.GetSongName(s.Filename))
+	fmt.Printf("old name: %s", oldName)
+
+	// TODO handle logic of 01 and 1
+
+	indexedName := fmt.Sprintf("%d - %s", s.Index, s.Name)
+	newName := filepath.Join(path, indexedName)
+	fmt.Printf("new name: %s", indexedName)
 
 	// rename the song
 	err := os.Rename(oldName, newName)

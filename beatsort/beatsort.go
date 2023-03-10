@@ -6,9 +6,13 @@ import (
 	"os"
 )
 
+type Playlist struct {
+	Songs []Song `json:"songs"`
+}
+
 type BeatSort struct {
 	PlaylistPath string
-	Playlist     []Song
+	Playlist     Playlist
 }
 
 func (bs *BeatSort) init(path string) error {
@@ -27,7 +31,7 @@ func (bs *BeatSort) init(path string) error {
 		fmt.Println(file.Name())
 		newSong.init(file.Name(), index+1) //  because the index in the list starts from 0
 
-		bs.Playlist = append(bs.Playlist, newSong)
+		bs.Playlist.Songs = append(bs.Playlist.Songs, newSong)
 	}
 
 	err = bs.SavePlaylistState()
@@ -38,7 +42,7 @@ func (bs *BeatSort) init(path string) error {
 	return nil
 }
 
-// SavePlaylistState just dumps the content in the bs.Playlist and dump it into order.json
+// SavePlaylistState just dumps the content in the bs.Song and dump it into order.json
 func (bs *BeatSort) SavePlaylistState() error {
 	// get the json data
 	data, err := json.MarshalIndent(bs.Playlist, "", "   ")
@@ -57,6 +61,24 @@ func (bs *BeatSort) SavePlaylistState() error {
 
 // SortPlaylist changes the name of each file in the directory with the given order in the `order.json` file
 func (bs *BeatSort) SortPlaylist() error {
+	// load the playlist
+	err := bs.LoadPlaylist()
+	if err != nil {
+		return err
+	}
+
+	// for each song in the playlist
+	for _, song := range bs.Playlist.Songs {
+		err = song.Rename(bs.PlaylistPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (bs *BeatSort) LoadPlaylist() error {
 	// read the file
 	data, err := os.ReadFile("order.json")
 	if err != nil {
@@ -68,14 +90,5 @@ func (bs *BeatSort) SortPlaylist() error {
 	if err != nil {
 		return err
 	}
-
-	// for each song in the playlist
-	for _, song := range bs.Playlist {
-		err = song.Rename(bs.PlaylistPath)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
