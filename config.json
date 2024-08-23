@@ -1,0 +1,104 @@
+{
+  "users": {
+    "guido": {
+      "playlists": [
+         {
+          "name":"ht-sundry",
+          "id":"youtube.com/playlist?list=PLTAsQKyPfAEstuwGK3YtU-gTHLOxapPGa&si=Piplz6WvEROkQ4z0"
+        },
+        {
+          "name": "ht-dub-techno",
+          "id": "2z6X0YXUXikQHoYw8qe9o0"
+        },
+        {
+          "name": "ht-techno",
+          "id": "0GoiGBDke3ZaKI76YwCQ05"
+        },
+        {
+          "name": "ht-club-techouse",
+          "id": "0k35qr67cxIyrvdS5gOzrt"
+        },
+        {
+          "name": "ht-minimal(warmup)",
+          "id": "6DJlsON8icO725zf7QHyXu"
+        },
+        {
+          "name": "ht-more-house",
+          "id":"0MiBLXnhaURw77WCXYg9ZL"
+        },
+        {
+          "name":"ht-techno-v2",
+          "id": "065B12cMxkM38XAoyPcilh"
+        },
+        {
+          "name":"ht-more-techouse",
+          "id":"6LWl1M0hVPULZ1IcWhkZSP"
+        }
+      ]
+    },
+    "adrian": {
+      "playlists": [
+        {
+          "name": "adrian-dj-set",
+          "id": "6nofOWMsSeuoj5DEUdDqeL"
+        },
+        {
+          "name": "adrian-deep-house",
+          "id": "5LEGzrYgiN0J7sBQ3GipM4"
+        },
+        {
+          "name": "adrian-melodic-techno",
+          "id": "2GjDw6NfmPnqIui89Oo91s"
+        },
+        {
+          "name": "adrian-ii",
+          "id": "779PLd8S0q8CM3rRrvVQEe"
+        },
+        {
+          "name": "adrian-33",
+          "id": "10Fgk0osiKS8xFmATqp6yN"
+        }
+      ]
+    },
+    "marcos": {
+      "playlists": [
+        {
+          "name": "melodic-techno",
+          "id": "youtube.com/playlist?list=PLB9U2qw0s0Xf8cUOZ370F_o3CiIVs4XAP&si=sKx23pr3jQwUFggI"
+        },
+        {
+          "name": "selected-progressive-2024",
+          "id": "youtube.com/playlist?list=PLB9U2qw0s0XctEAucWluuc7TKIPY4XHkZ&si=xS7kcEtFcwIk4iqE"
+        },
+        {
+          "name": "next-live-set",
+          "id": "youtube.com/playlist?list=PLB9U2qw0s0Xegbyn9hOehEMIdACpLbrCn&si=WFquIe_n6UHoLpPW"
+        }
+      ]
+    },
+    "kpg": {
+      "playlists": [
+        {
+          "name": "tech-house-kpg",
+          "id": "5c3r2uQidviyWyhXEd3dIu"
+        }
+      ]
+    },
+    "santi": {
+      "playlists": [
+        {
+          "name" : "klk",
+          "id": "4lMpq4IUdttHUsHmivJrgs"
+        },
+        {
+          "name" : "fenomenal",
+          "id": "7s6rx8NOBltI25CqDZf8gN"
+        },
+        {
+          "name": "idk",
+          "id" : "4fw2sriQQOuDwtukNySHWQ"
+        }
+      ]
+    }
+  }
+}
