@@ -12,7 +12,7 @@ else
 endif
 
 build:
-	docker build -t heritage .
+	docker build . -t heritage
 
 run: # this runs both windows and linux, do not edit
 	docker run -it \
