@@ -49,7 +49,7 @@ class Updater:
         track.get_watch_url()
 
         # download using binary
-        bash_command = f"./yt-dlp -f bestaudio --extract-audio -k --audio-format {self.audio_format} -o '{dir_name}/{track.name}.%(ext)s' '{track.watch_url}'"
+        bash_command = f"./yt-dlp -f bestaudio --extract-audio -k --audio-format {self.audio_format} -o '{dir_name}/{track.name}.%(ext)s' '{track.watch_url}' > /dev/null"
 
         try:
             # run sh

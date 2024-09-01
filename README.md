@@ -13,6 +13,8 @@
 ```
 # heritage
 
+## :bulb: this is currently not working due to YouTube copyright policies, and this uses `yt-dlp`. check https://www.youtube.com/s/player/57c75fa4/player_ias.vflset/en_US/base.js 
+
 The purpose of heritage was simple: fix this highly annoying friends' situation:
 
 Imagine you're friends with people who love going to electronic parties and listening to electronic music, and you have a mixer, such as the [Pioneer - DDJ400](https://www.pioneerdj.com/es-419/product/controller/archive/ddj-400/black/overview/) and you usually play with your friends in "Being a Disc Jockey" and start DJing with friends at home and sometimes carrying the mixer to other places.

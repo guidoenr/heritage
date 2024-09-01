@@ -22,7 +22,7 @@ sp_oauth = SpotifyOAuth(client_id=os.environ["SPOTIPY_CLIENT_ID"],
                         redirect_uri=os.environ["SPOTIPY_REDIRECT_URI"],
                         username=os.environ["SPOTIPY_USERNAME"],
                         scope=scopes,
-                        open_browser=True)
+                        open_browser=False)
 
 
 def authorize():
