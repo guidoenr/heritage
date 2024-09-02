@@ -95,7 +95,6 @@ class Playlist:
             return self.get_spotify_tracks()
 
     def clean(self):
-        logger.info(f"cleaning playlist {self.name} ...")
         with os.scandir(self.path) as it:
             for entry in it:
                 if entry.is_file() and not entry.name.endswith('.mp3') and not entry.name.endswith(".wav"):

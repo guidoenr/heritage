@@ -12,7 +12,6 @@ class Updater:
         logger.info(f'Updater: [{audio_format}] format')
 
     def update_playlist(self, playlist):
-        logger.info(f"updating ({playlist.name})")
         tracks_to_download = playlist.get_tracks_to_download()
         tracks_to_remove = playlist.get_tracks_to_remove()
 
@@ -22,7 +21,7 @@ class Updater:
 
         if tracks_to_download or tracks_to_remove:
             logger.info("tracks to download: %s", '\n'.join(t.name for t in tracks_to_download))
-            logger.info("tracks to remove: %s", '\n'.join(t.name for t in tracks_to_remove))
+            logger.warning("tracks to remove: %s", '\n'.join(t.name for t in tracks_to_remove))
 
         for tr in tracks_to_remove:
             logger.debug(f"removing track: {tr.name} ...")
@@ -38,6 +37,7 @@ class Updater:
             threads.append(thread)
             thread.start()
 
+        
         # wait threads to finish
         for thread in threads:
             thread.join()
@@ -49,7 +49,7 @@ class Updater:
         track.get_watch_url()
 
         # download using binary
-        bash_command = f"./yt-dlp -f bestaudio --extract-audio -k --audio-format {self.audio_format} -o '{dir_name}/{track.name}.%(ext)s' '{track.watch_url}' > /dev/null"
+        bash_command = f"./yt-dlp -f bestaudio --extract-audio -k --audio-format {self.audio_format} -o '{dir_name}/{track.name}.%(ext)s' '{track.watch_url}'"
 
         try:
             # run sh

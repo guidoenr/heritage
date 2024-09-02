@@ -13,7 +13,6 @@
 ```
 # heritage
 
-## :bulb: this is currently not working due to YouTube copyright policies, and this uses `yt-dlp`. check https://www.youtube.com/s/player/57c75fa4/player_ias.vflset/en_US/base.js 
 
 The purpose of heritage was simple: fix this highly annoying friends' situation:
 
@@ -44,8 +43,8 @@ This was never meant to be public, but just maybe someone is experiencing a simi
 Anyway, the results are good -> It makes DJ switching a smooth process, the same goes for playing to be 'DJs' and getting everything synced everyday.
 _(yeah i know real djs don't download music on this way and don't prepare sets on this way but who cares? this is for fun)_
 
-## Install?
-As i mentioned, this was never meant to be public, so if you feel this is useful for solving any problem that you have, let me know and I will complete this section, otherwise? this repo is akin a `memory pointer to funny moments`
+## install?
+this was never meant to be public, so if you feel this is useful for solving any problem that you have, let me know and I will complete this section, otherwise? this repo is akin a `memory pointer to funny moments`
 
 >>>>> `Let me please stand up, what is this? Hypnotize! say this... Just a moment, NO. Mixer, poison, all things go, the reason? Monster tube! Let's dance, Detuner`
 
