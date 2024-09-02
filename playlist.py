@@ -16,7 +16,7 @@ scopes = ["playlist-read-collaborative", "playlist-read-private", "playlist-modi
 fields = 'items(track(uri,name,artists(name))),next'
 logger = get_custom_logger()
 
-# Spotify Auth
+# Spotify Auth (all of these are ENV)
 sp_oauth = SpotifyOAuth(client_id=os.environ["SPOTIPY_CLIENT_ID"],
                         client_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
                         redirect_uri=os.environ["SPOTIPY_REDIRECT_URI"],
