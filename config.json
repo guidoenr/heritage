@@ -15,6 +15,10 @@
           "id": "0GoiGBDke3ZaKI76YwCQ05"
         },
         {
+          "name":"ht-techno-v2",
+          "id": "065B12cMxkM38XAoyPcilh"
+        },
+        {
           "name": "ht-club-techouse",
           "id": "0k35qr67cxIyrvdS5gOzrt"
         },
@@ -26,12 +30,9 @@
           "name": "ht-more-house",
           "id":"0MiBLXnhaURw77WCXYg9ZL"
         },
+
         {
-          "name":"ht-techno-v2",
-          "id": "065B12cMxkM38XAoyPcilh"
-        },
-        {
-          "name":"ht-more-techouse",
+          "name":"ht-acid-techouse",
           "id":"6LWl1M0hVPULZ1IcWhkZSP"
         }
       ]
@@ -73,30 +74,6 @@
         {
           "name": "next-live-set",
           "id": "youtube.com/playlist?list=PLB9U2qw0s0Xegbyn9hOehEMIdACpLbrCn&si=WFquIe_n6UHoLpPW"
-        }
-      ]
-    },
-    "kpg": {
-      "playlists": [
-        {
-          "name": "tech-house-kpg",
-          "id": "5c3r2uQidviyWyhXEd3dIu"
-        }
-      ]
-    },
-    "santi": {
-      "playlists": [
-        {
-          "name" : "klk",
-          "id": "4lMpq4IUdttHUsHmivJrgs"
-        },
-        {
-          "name" : "fenomenal",
-          "id": "7s6rx8NOBltI25CqDZf8gN"
-        },
-        {
-          "name": "idk",
-          "id" : "4fw2sriQQOuDwtukNySHWQ"
         }
       ]
     }
