@@ -77,5 +77,21 @@
         }
       ]
     }
+  },
+  "santi": {
+    "playlists": [
+      {
+        "name" : "klk",
+        "id": "4lMpq4IUdttHUsHmivJrgs"
+      },
+      {
+        "name" : "fenomenal",
+        "id": "7s6rx8NOBltI25CqDZf8gN"
+      },
+      {
+        "name": "idk",
+        "id" : "4fw2sriQQOuDwtukNySHWQ"
+      }
+    ]
   }
 }
